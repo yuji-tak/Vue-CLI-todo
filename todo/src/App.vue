@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <transition-group name="fade" tag="tbody">
-              <tr v-for="(todo, index) in displayTodos" :key="todo.id">
+              <tr v-for="(todo, index) in sortedTodos" :key="todo.id">
                 <td>{{ indexOfAll(todo) }}</td>
                 <td>{{ todo.comment }}</td>
                 <td><button @click="changeState(todo)">{{ currentState(todo) }}</button></td>
@@ -68,7 +68,7 @@ export default {
   },
   computed: {
     // 作業状態に応じ、表示するtodosの要素を選別
-    displayTodos: function() {
+    sortedTodos: function() {
       if (this.selectedBtn === 'all') {
         return this.todos;
       } else if (this.selectedBtn === 'working') {
