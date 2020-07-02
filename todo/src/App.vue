@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h1>ToDoリスト</h1>
     <!-- 作業状態の選択 -->
     <form>
@@ -16,11 +16,11 @@
                 </tr>
             </thead>
             <transition-group name="fade" tag="tbody">
-              <tr v-for="(todo, index) in sortedTodos" :key="todo.id">
+              <tr v-for="(todo) in sortedTodos" :key="todo.id">
                 <td>{{ indexOfAll(todo) }}</td>
                 <td>{{ todo.comment }}</td>
                 <td><button @click="changeState(todo)">{{ currentState(todo) }}</button></td>
-                <td><button @click="removeTodo(index)">削除</button></td>
+                <td><button @click="removeTodo(indexOfAll(todo))">削除</button></td>
               </tr>
             </transition-group>
         </table>
@@ -72,16 +72,9 @@ export default {
       if (this.selectedBtn === 'all') {
         return this.todos;
       } else if (this.selectedBtn === 'working') {
-        return this.todos.filter(todo => {
-          return !todo.isDone; 
-        })
-      } else if (this.selectedBtn === 'completed') {
-        return this.todos.filter(todo => {
-          return todo.isDone;
-        })
+        return this.todos.filter(todo => !todo.isDone)
       } else {
-        // ？このreturn〜がないと動作しない理由不明
-        return this.todos;
+        return this.todos.filter(todo => todo.isDone)
       }
     },
     // 作業状態の監視
@@ -96,13 +89,17 @@ export default {
         return this.todos.indexOf(todo);
       }
     }
-  },
+  }
 }
 </script>
 <style>
 div {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   color: #2c3e50;
+}
+.container {
+  width: 100%;
+  overflow: hidden;
 }
 /* transition */
 .fade-move {
